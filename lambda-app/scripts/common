@@ -1,0 +1,15 @@
+#!/bin/bash
+
+#This file is expected to live in <root-folder>/scripts, so
+ROOT_PATH=`git rev-parse --show-toplevel`/lambda-app
+SCRIPTS_PATH=$ROOT_PATH/scripts
+ENV_PATH=$ROOT_PATH/env
+APP_PATH=$ROOT_PATH/app
+
+ENV_ACTIVATE() {
+  source $ENV_PATH/bin/activate
+}
+
+ENV_DEACTIVATE() {
+  source $ENV_PATH/bin/activate
+}

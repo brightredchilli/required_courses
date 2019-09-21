@@ -1,0 +1,8 @@
+#!/bin/bash
+source "$(dirname $0)/common"
+
+ENV_ACTIVATE
+
+cd $APP_PATH
+
+python main.py -server

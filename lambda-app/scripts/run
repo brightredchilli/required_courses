@@ -1,0 +1,11 @@
+#!/bin/bash
+
+#This file is expected to live in <root-folder>/scripts, so
+source "$(dirname $0)/common"
+
+ENV_ACTIVATE
+
+cd $APP_PATH
+
+python main.py -run
+

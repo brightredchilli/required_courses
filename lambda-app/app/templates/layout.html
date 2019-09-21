@@ -1,0 +1,28 @@
+ <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="assets/skeleton.css">
+    <link rel="stylesheet" type="text/css" href="assets/style.css">
+    <title>{{ title }} </title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <h1>
+          {{ title }}
+        </h1>
+      </div>
+
+      <div class="row">
+        <ul>
+        {% for item in array %}
+          <li>{{ item|e }} </li>
+        {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>
+

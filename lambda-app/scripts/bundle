@@ -1,0 +1,54 @@
+#!/bin/bash
+source "$(dirname $0)/common"
+CWD=$(pwd)
+
+# Find root folder
+LAYER_ZIP_FILE=$ROOT_PATH/lambda_distribution_layer.zip
+APP_ZIP_FILE=$ROOT_PATH/lambda_distribution_app.zip
+
+rm -rf $LAYER_ZIP_FILE
+rm -rf $APP_ZIP_FILE
+
+# Activate python
+ENV_ACTIVATE
+
+# Find the virtualenv folder for this installation
+SITE_PACKAGES=`python -c "import site; print(site.getsitepackages()[0])"`
+NLTK_PATH=`python -c "import nltk; print(nltk.data.path[0])"`
+
+# deactivate python
+deactivate
+
+echo "Found site package: " $SITE_PACKAGES
+ls $SITE_PACKAGES
+
+echo "Found NLTK_PATH: " $NLTK_PATH
+ls $NLTK_PATH
+
+echo "Zipping Layer..."
+cd $SITE_PACKAGES
+
+rm -rf /tmp/python
+mkdir /tmp/python
+mkdir /tmp/python/nltk_data
+cp -r $SITE_PACKAGES/* /tmp/python/
+cp -r $NLTK_PATH/* /tmp/python/nltk_data/
+
+# lambda expects python dependencies to be bundled under the directory 'python'
+# Zip dependencies, excluding caches and other unneeded deps in the site_packages folder
+cd /tmp
+zip -x "*__pycache__*" -x "python/pip*/*" -x "python/setuptools*" -r $LAYER_ZIP_FILE python > /dev/null
+rm -rf python
+cd $CWD
+
+echo "Zipping App..."
+cd $APP_PATH
+zip $APP_ZIP_FILE *
+cd $CWD
+
+# Print size of output
+echo "App size:"
+du -h $APP_ZIP_FILE
+
+echo "layer size:"
+du -h $LAYER_ZIP_FILE
