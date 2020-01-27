@@ -14,9 +14,18 @@ rm -rf $APP_ZIP_FILE
 SITE_PACKAGES=`python -c "import site; print(site.getsitepackages()[0])"`
 NLTK_PATH=`python -c "import nltk; print(nltk.data.path[0])"`
 
+if ! [ -d "$SITE_PACKAGES" ]; then
+  echo "site packages not found, exiting..."
+  echo "Make sure python is installed"
+  exit
+fi
 echo "Found site package: " $SITE_PACKAGES
-ls $SITE_PACKAGES
 
+
+if ! [ -d "$NLTK_PATH" ]; then
+  echo "nltk data path is not found, run setup script first. exiting..."
+  exit
+fi
 echo "Found NLTK_PATH: " $NLTK_PATH
 ls $NLTK_PATH
 
@@ -35,7 +44,8 @@ cd /tmp
 zip -x "*__pycache__*" \
   -x "python/pip*/*" \
   -x "python/setuptools*" \
-  -x "virtualenv*" \
+  -x "python/virtualenv*" \
+  -x "python/livereload*" \
   -r $LAYER_ZIP_FILE python > /dev/null
 rm -rf python
 cd $CWD
