@@ -34,4 +34,7 @@ two zip files:
 2. `lambda_distribution_app.zip` : Bundles the app
 
 
+`scripts/run`: Run the app, outputting html to the stdout
+
+`scripts/server`: Starts the livereload server
 

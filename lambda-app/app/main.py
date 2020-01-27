@@ -1,10 +1,7 @@
 from required_courses import generateArray
 import sys
 import subprocess
-import nltk
-from jinja2 import Template
-from jinja2 import Environment, PackageLoader, select_autoescape
-from livereload import Server, shell
+from jinja2 import Template, Environment, PackageLoader, select_autoescape
 
 
 # The function that AWS Lambda calls
@@ -37,6 +34,8 @@ def writeAssets():
     subprocess.call(["cp", "-R", "assets", "../public/"])
 
 def startServer():
+    #hack so that lambda doesnt need to run this import code unnecessarily
+    from livereload import Server, shell
     server = Server()
     server.watch("*.py", writeHTML)
     server.watch("templates/*", writeHTML)

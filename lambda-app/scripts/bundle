@@ -5,6 +5,7 @@ CWD=$(pwd)
 # Find root folder
 LAYER_ZIP_FILE=$ROOT_PATH/lambda_distribution_layer.zip
 APP_ZIP_FILE=$ROOT_PATH/lambda_distribution_app.zip
+ASSETS_ZIP_FILE=$ROOT_PATH/lambda_distribution_assets.zip
 
 rm -rf $LAYER_ZIP_FILE
 rm -rf $APP_ZIP_FILE
@@ -43,7 +44,11 @@ cd $CWD
 
 echo "Zipping App..."
 cd $APP_PATH
-zip $APP_ZIP_FILE *
+zip $APP_ZIP_FILE *.py templates/**
+
+echo "Zipping Assets..."
+cd $APP_PATH
+zip $ASSETS_ZIP_FILE assets/**
 cd $CWD
 
 # Print size of output
@@ -52,3 +57,6 @@ du -h $APP_ZIP_FILE
 
 echo "layer size:"
 du -h $LAYER_ZIP_FILE
+
+echo "Assets size:"
+du -h $ASSETS_ZIP_FILE
