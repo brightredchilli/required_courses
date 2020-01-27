@@ -10,15 +10,9 @@ ASSETS_ZIP_FILE=$ROOT_PATH/lambda_distribution_assets.zip
 rm -rf $LAYER_ZIP_FILE
 rm -rf $APP_ZIP_FILE
 
-# Activate python
-ENV_ACTIVATE
-
 # Find the virtualenv folder for this installation
 SITE_PACKAGES=`python -c "import site; print(site.getsitepackages()[0])"`
 NLTK_PATH=`python -c "import nltk; print(nltk.data.path[0])"`
-
-# deactivate python
-deactivate
 
 echo "Found site package: " $SITE_PACKAGES
 ls $SITE_PACKAGES
@@ -38,7 +32,11 @@ cp -r $NLTK_PATH/* /tmp/python/nltk_data/
 # lambda expects python dependencies to be bundled under the directory 'python'
 # Zip dependencies, excluding caches and other unneeded deps in the site_packages folder
 cd /tmp
-zip -x "*__pycache__*" -x "python/pip*/*" -x "python/setuptools*" -r $LAYER_ZIP_FILE python > /dev/null
+zip -x "*__pycache__*" \
+  -x "python/pip*/*" \
+  -x "python/setuptools*" \
+  -x "virtualenv*" \
+  -r $LAYER_ZIP_FILE python > /dev/null
 rm -rf python
 cd $CWD
 
